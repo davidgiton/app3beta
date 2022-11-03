@@ -8,10 +8,13 @@
 
 
     <Button
+        android:id="@+id/logoutbutton"
         android:layout_width="@dimen/standrad_width"
         android:layout_height="@dimen/standard_hight"
-        android:id="@+id/logoutbutton"
+
         android:onClick="onLogout"
-        android:text="logout"/>
+        android:text="logout"
+        tools:layout_editor_absoluteX="55dp"
+        tools:layout_editor_absoluteY="26dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
