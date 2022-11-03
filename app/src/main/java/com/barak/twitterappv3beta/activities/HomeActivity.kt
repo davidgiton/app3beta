@@ -17,12 +17,16 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
+
     private var sectionsPagerAdapter : SectionPageAdapter? = null
     private val firebaseAuth = FirebaseAuth.getInstance()
+
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val myActivityFragment = MyActivityFragment()
-    private val userID = FirebaseAuth.getInstance().currentUser?.uid
+
+    private var userID = FirebaseAuth.getInstance().currentUser?.uid
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -45,18 +49,17 @@ class HomeActivity : AppCompatActivity() {
             }
 
         })
+       logo.setOnClickListener { view ->
+           startActivity(ProfileActivity.newIntent(this ))
+       }
     }
 
 
-        fun onLogout(v: View) {
-        firebaseAuth.signOut()
-            startActivity(LoginActivity.newIntent(this))
-            finish()
 
-}
 
     override fun onResume() {
         super.onResume()
+        userID = FirebaseAuth.getInstance().currentUser?.uid
         if (userID == null) {
             startActivity(LoginActivity.newIntent(this))
             finish()
