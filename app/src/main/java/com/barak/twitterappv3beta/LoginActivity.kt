@@ -78,6 +78,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun goToSignup(v: View){
+            startActivity(SignupActivity.newIntent(this))
+                finish()
 
     }
 

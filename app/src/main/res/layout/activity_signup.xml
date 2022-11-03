@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignupActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/title"
+                android:layout_margin="@dimen/grid_2x"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="@dimen/standrad_width"
+                android:layout_height="wrap_content"
+                android:id="@+id/usernameTIL"
+                android:layout_below="@id/imageview"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/grid_2x">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/usernamelET"
+                    android:inputType="text"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/hint_username"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="@dimen/standrad_width"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailTIL"
+                android:layout_below="@id/usernameTIL"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/grid_2x">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/emailET"
+                    android:inputType="textEmailAddress"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/hint_email"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="@dimen/standrad_width"
+                android:layout_height="wrap_content"
+                android:id="@+id/passwordTIL"
+                android:layout_below="@id/emailTIL"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/grid_2x">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/passwordET"
+                    android:inputType="textPassword"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/hint_password"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonsignup"
+                style="@style/standradbutton"
+                android:layout_width="@dimen/standrad_width"
+                android:layout_height="@dimen/standard_hight"
+                android:layout_below="@id/passwordTIL"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/grid_2x"
+                android:layout_marginTop="@dimen/grid_2x"
+                android:layout_marginEnd="@dimen/grid_2x"
+                android:layout_marginBottom="@dimen/grid_2x"
+                android:onClick="onSignup"
+                android:text="@string/button_signup" />
+
+            <TextView
+                android:id="@+id/loginTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/buttonsignup"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/grid_2x"
+                android:layout_marginTop="@dimen/grid_2x"
+                android:layout_marginEnd="@dimen/grid_2x"
+                android:layout_marginBottom="@dimen/grid_2x"
+                android:clickable="true"
+                android:onClick="goToLogin"
+                android:text="@string/text_login"
+                android:textColor="@color/blue" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/signupProgresslayout"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
