@@ -1,10 +1,11 @@
-package com.barak.twitterappv3beta
+package com.barak.twitterappv3beta.activities
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.barak.twitterappv3beta.R
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity() {
