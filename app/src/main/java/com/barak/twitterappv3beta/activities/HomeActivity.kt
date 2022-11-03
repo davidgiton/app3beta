@@ -12,15 +12,21 @@ import com.barak.twitterappv3beta.R
 import com.barak.twitterappv3beta.fragments.HomeFragment
 import com.barak.twitterappv3beta.fragments.MyActivityFragment
 import com.barak.twitterappv3beta.fragments.SearchFragment
+import com.barak.twitterappv3beta.util.DATA_USERS
+import com.barak.twitterappv3beta.util.User
+import com.barak.twitterappv3beta.util.loadUrl
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
     private var sectionsPagerAdapter : SectionPageAdapter? = null
     private val firebaseAuth = FirebaseAuth.getInstance()
-
+    private val firebaseDB = FirebaseFirestore.getInstance()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private var user: User? = null
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val myActivityFragment = MyActivityFragment()
@@ -64,6 +70,26 @@ class HomeActivity : AppCompatActivity() {
             startActivity(LoginActivity.newIntent(this))
             finish()
         }
+        else {
+            populate()
+        }
+    }
+
+    fun populate() {
+        homeprogresslayout.visibility = View.VISIBLE
+        firebaseDB.collection(DATA_USERS).document(userId!!).get()
+            .addOnSuccessListener { documentSnapshot ->
+                homeprogresslayout.visibility = View.GONE
+                user = documentSnapshot.toObject(User::class.java)
+                user?.imageUrl?.let {
+                    logo.loadUrl(it, R.drawable.logo)
+                }
+
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+                finish()
+            }
     }
 
     inner class SectionPageAdapter(fa: FragmentManager) : FragmentPagerAdapter(fa) {

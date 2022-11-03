@@ -7,6 +7,7 @@ val DATA_USER_USERNAME = "username"
 val DATA_USER_IMAGE_URL = "imageUrl"
 val DATA_USER_HASTAGS = "followHashtags"
 val DATA_USER_FOLLOW = "forllowusers"
+
 val DATA_IMAGES = "ProfileImages"
 
 val DATA_TWEETS= "Tweets"

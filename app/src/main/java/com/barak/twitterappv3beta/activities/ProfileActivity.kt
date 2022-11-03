@@ -1,7 +1,9 @@
 package com.barak.twitterappv3beta.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,12 +17,12 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
+
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDB = FirebaseFirestore.getInstance()
     private val firebaseStorage = FirebaseStorage.getInstance().reference
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
     private var imageUrl: String? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,12 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         profileprogresslayout.setOnTouchListener { v, event -> true }
+
+        photoIV.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE_PHOTO)
+        }
 
         populateInfo()
     }
@@ -72,13 +80,53 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.makeText(this, "Update failed. Please try again.", Toast.LENGTH_SHORT).show()
                 profileprogresslayout.visibility = View.GONE
             }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_PHOTO) {
+            storeImage(data?.data)
+        }
+    }
+
+    fun storeImage(imageUri: Uri?) {
+        imageUri?.let {
+            Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show()
+            profileprogresslayout.visibility = View.VISIBLE
+
+            val filePath = firebaseStorage.child(DATA_IMAGES).child(userId!!)
+            filePath.putFile(imageUri)
+                .addOnSuccessListener {
+                    filePath.downloadUrl
+                        .addOnSuccessListener {uri ->
+                            val url = uri.toString()
+                            firebaseDB.collection(DATA_USERS).document(userId!!).update(DATA_USER_IMAGE_URL, url)
+                                .addOnSuccessListener {
+                                    imageUrl = url
+                                    photoIV.loadUrl(imageUrl, R.drawable.logo)
+                                }
+                            profileprogresslayout.visibility = View.GONE
+                        }
+                        .addOnFailureListener {
+                            onUploadFailure()
+                        }
+                }
+                .addOnFailureListener {
+                    onUploadFailure()
+                }
+        }
+    }
+
+    fun onUploadFailure() {
+        Toast.makeText(this, "Image upload failed. Please try agail later.", Toast.LENGTH_SHORT).show()
+        profileprogresslayout.visibility = View.GONE
     }
 
     fun onSignout(v: View) {
         firebaseAuth.signOut()
         finish()
     }
+
     companion object {
         fun newIntent(context: Context) = Intent(context, ProfileActivity::class.java)
     }
