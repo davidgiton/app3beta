@@ -15,6 +15,6 @@
         android:onClick="onLogout"
         android:text="logout"
         tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="26dp" />
+        tools:layout_editor_absoluteY="50dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
