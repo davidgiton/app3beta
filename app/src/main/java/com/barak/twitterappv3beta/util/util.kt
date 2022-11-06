@@ -6,6 +6,8 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.barak.twitterappv3beta.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.text.DateFormat
+import java.util.*
 
 fun ImageView.loadUrl(url: String?, errorDrawable: Int = R.drawable.empty) {
     context?.let {
@@ -24,4 +26,11 @@ fun progressDrawable(context: Context): CircularProgressDrawable {
         centerRadius = 30f
         start()
     }
+}
+fun getDate(s: Long?): String {
+    s?.let {
+        val df = DateFormat.getDateInstance()
+        return df.format(Date(it))
+    }
+    return "Unknown"
 }

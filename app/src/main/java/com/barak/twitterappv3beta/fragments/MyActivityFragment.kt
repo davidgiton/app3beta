@@ -10,6 +10,7 @@ import com.barak.twitterappv3beta.R
 class MyActivityFragment : TwitterFragment() {
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -17,5 +18,7 @@ class MyActivityFragment : TwitterFragment() {
 
         return inflater.inflate(R.layout.fragment_my_activity, container, false)
     }
+    override fun updateList() {
 
+    }
 }

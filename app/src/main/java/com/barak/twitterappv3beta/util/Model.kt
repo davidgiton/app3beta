@@ -20,3 +20,8 @@ data class Tweet(
     val likes: ArrayList<String>? = arrayListOf()
 )
 
+interface TweetListener {
+    fun onLayoutClick(tweet: Tweet?)
+    fun onLike(tweet: Tweet?)
+    fun onRetweet(tweet: Tweet?)
+}
