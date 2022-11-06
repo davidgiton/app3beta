@@ -19,9 +19,9 @@ import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class SearchFragment : TwitterFragment() {
+
     private var currentHashtag = ""
     private var hashtagFollowed = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,12 +29,11 @@ class SearchFragment : TwitterFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listener = TweeterListenerImpo ( tweetList, currentUser , callback )
-
-
+        listener = TweeterListenerImpo(tweetList, currentUser, callback)
 
         tweetsAdapter = TweetListAdapter(userId!!, arrayListOf())
         tweetsAdapter?.setListener(listener)
@@ -48,6 +47,7 @@ class SearchFragment : TwitterFragment() {
             swipeRefresh.isRefreshing = false
             updateList()
         }
+
         followHashtag.setOnClickListener {
             followHashtag.isClickable = false
             val followed = currentUser?.followHashtags
@@ -66,7 +66,6 @@ class SearchFragment : TwitterFragment() {
                     followHashtag.isClickable = true
                 }
         }
-
     }
 
     fun newHashtag(term: String) {
@@ -75,8 +74,7 @@ class SearchFragment : TwitterFragment() {
         updateList()
     }
 
-
-  override  fun updateList() {
+    override fun updateList() {
         tweetList?.visibility = View.GONE
         firebaseDB.collection(DATA_TWEETS).whereArrayContains(DATA_TWEET_HASHTAGS, currentHashtag).get()
             .addOnSuccessListener { list ->
@@ -106,4 +104,5 @@ class SearchFragment : TwitterFragment() {
             }
         }
     }
+
 }

@@ -13,6 +13,7 @@ import com.barak.twitterappv3beta.util.Tweet
 import com.barak.twitterappv3beta.util.getDate
 import com.barak.twitterappv3beta.util.loadUrl
 
+
 class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) : RecyclerView.Adapter<TweetListAdapter.TweetViewHolder>() {
 
     private var listener: TweetListener? = null
@@ -67,12 +68,11 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) : Recyc
             like.setOnClickListener { listener?.onLike(tweet) }
             retweet.setOnClickListener { listener?.onRetweet(tweet) }
 
-            if(tweet.likes?.contains(userId) == true)  {
+            if(tweet.likes?.contains(userId) == true) {
                 like.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.like))
-            } else{
+            } else {
                 like.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.like_inactive))
             }
-
 
             if(tweet.userIds?.get(0).equals(userId)) {
                 retweet.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.original))

@@ -25,27 +25,32 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity(), HomeCallback {
 
-    private var sectionsPagerAdapter : SectionPageAdapter? = null
+    private var sectionsPagerAdapter: SectionPageAdapter? = null
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDB = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid
-    private var user: User? = null
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val myActivityFragment = MyActivityFragment()
+    private var userId = FirebaseAuth.getInstance().currentUser?.uid
+    private var user: User? = null
     private var currentFragment: TwitterFragment = homeFragment
-
-    private var userID = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         sectionsPagerAdapter = SectionPageAdapter(supportFragmentManager)
+
         container.adapter = sectionsPagerAdapter
-        container.addOnPageChangeListener(  TabLayout.TabLayoutOnPageChangeListener(tabs))
+        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            }
+
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when(tab?.position) {
                     0 -> {
@@ -53,12 +58,11 @@ class HomeActivity : AppCompatActivity(), HomeCallback {
                         titleBar.text = "Home"
                         searchBar.visibility = View.GONE
                         currentFragment = homeFragment
-
                     }
                     1 -> {
                         titleBar.visibility = View.GONE
                         searchBar.visibility = View.VISIBLE
-                            currentFragment = searchFragment
+                        currentFragment = searchFragment
                     }
                     2 -> {
 
@@ -66,47 +70,36 @@ class HomeActivity : AppCompatActivity(), HomeCallback {
                         titleBar.text = "My Activity"
                         searchBar.visibility = View.GONE
                         currentFragment = myActivityFragment
-
                     }
                 }
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
         })
-       logo.setOnClickListener { view ->
-           startActivity(ProfileActivity.newIntent(this ))
-       }
+
+        logo.setOnClickListener { view ->
+            startActivity(ProfileActivity.newIntent(this))
+        }
+
         fab.setOnClickListener {
             startActivity(TweetActivity.newIntent(this, userId, user?.username))
         }
-        homeprogresslayout.setOnTouchListener { view, event -> true }
+
+        homeprogresslayout.setOnTouchListener { v, event -> true }
+
         search.setOnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchFragment.newHashtag(v?.text.toString())
             }
             true
         }
-
     }
-
-
-
 
     override fun onResume() {
         super.onResume()
-        userID = FirebaseAuth.getInstance().currentUser?.uid
-        if (userID == null) {
+        userId = FirebaseAuth.getInstance().currentUser?.uid
+        if(userId == null) {
             startActivity(LoginActivity.newIntent(this))
             finish()
-        }
-        else {
+        } else {
             populate()
         }
     }
@@ -129,7 +122,6 @@ class HomeActivity : AppCompatActivity(), HomeCallback {
                     logo.loadUrl(it, R.drawable.logo)
                 }
                 updateFragmentUser()
-
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
@@ -137,32 +129,28 @@ class HomeActivity : AppCompatActivity(), HomeCallback {
             }
     }
 
-    fun updateFragmentUser () {
+    fun updateFragmentUser() {
         homeFragment.setUser(user)
         searchFragment.setUser(user)
         myActivityFragment.setUser(user)
         currentFragment.updateList()
     }
 
-    inner class SectionPageAdapter(fa: FragmentManager) : FragmentPagerAdapter(fa) {
-        override fun getCount() = 3
-
-
+    inner class SectionPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-      return when(position) {
-
-          0 -> homeFragment
-          1 -> searchFragment
-          else -> myActivityFragment
-      }
+            return when(position) {
+                0 -> homeFragment
+                1 -> searchFragment
+                else -> myActivityFragment
+            }
         }
 
-    }
+        override fun getCount() = 3
 
+    }
 
     companion object {
         fun newIntent(context: Context) = Intent(context, HomeActivity::class.java)
     }
-
 }
